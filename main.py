@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from typing import List
 
 # 1. Initialize FastAPI
-app = FastAPI(title="Credit Fraud Detection API (XGBoost)")
+app = FastAPI(title="Credit Card Fraud Detection API (XGBoost)")
 
 # 2. Define the Input Schema (Matches Kaggle Dataset Structure)
 class TransactionData(BaseModel):
