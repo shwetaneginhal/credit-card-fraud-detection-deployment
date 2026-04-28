@@ -16,6 +16,17 @@ This repository contains a production-ready REST API designed to detect fraudule
 Both optimization (F1 score and Cost optimal) methods suggest an unusually high decision threshold (above 0.90). This indicates that the XGBoost model has high discriminative power, clearly separating fraud from legitimate transactions with high confidence. 
 While a threshold of 0.94 maximizes the **F1-Score**, the 0.91 threshold was chosen for **Cost-Optimization**. By providing a more inclusive safety margin, this setting minimizes the total projected financial loss to $1,944.98, prioritizing the detection of high-cost fraudulent transactions over pure statistical balance.
 
+## Future Work - Monitoring 
+
+While this project provides a functional API, a production-grade deployment would include continuous monitoring to ensure the model's 0.91 threshold remains effective over time.
+
+### Proposed Monitoring 
+* **Data Drift (Covariate Shift):** Detecting changes in the distribution of PCA-transformed features ($V1$–$V28$) or transaction amounts, which could signal new consumer behaviors.
+* **Concept Drift:** Identifying shifts in the relationship between transaction patterns and fraud, ensuring the model evolves alongside changing fraudulent tactics.
+* **Target Drift:** Identifying changes in the frequency or distribution of predicted labels  (e.g., a fraud detection model trained on 0.17% fraud sees 5% fraud in production).
+
+By implementing an automated monitoring loop (using e.g Evidently AI), the system could trigger **retraining** and **threshold recalibration** whenever a significant statistical shift is detected, ensuring long-term reliability in a dynamic financial environment.
+
 ## 📁 Project Structure
 ```text
 .
@@ -87,9 +98,11 @@ Submit a JSON payload containing 30 features (`Time`, `V1-V28`, and `Amount`).
   "Amount": 1.00
 }
 ```
+
 ## 🛑 Troubleshooting
 
 * **Port Conflict:** If port 8000 is taken, stop existing containers using `docker rm -f fraud_api_container`.
 * **Docker Logs:** To debug startup issues, use `docker logs fraud_api_container`.
 * **Feature Names:** Ensure the input JSON includes all 30 features (`Time`, `V1`–`V28`, `Amount`) in that exact order.
+  
 
